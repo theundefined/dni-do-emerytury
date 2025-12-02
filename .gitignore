@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-wheel-metadata/
+.eggs/
+*.egg-info/
+*.egg
+
+# Build artifacts
+build/
+dist/
+*.so
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
