@@ -10,45 +10,18 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 1
 fi
 
-# Get current version from pyproject.toml
-CURRENT_VERSION=$(grep -m1 'version =' pyproject.toml | cut -d '"' -f 2)
-IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+# Get version from argument
+VERSION=$1
+if [ -z "$VERSION" ]; then
+  echo "Usage: ./release.sh <version>"
+  exit 1
+fi
 
-# Determine new version
-BUMP_TYPE=$1
-case $BUMP_TYPE in
-  patch)
-    PATCH=$((PATCH + 1))
-    ;;
-  minor)
-    MINOR=$((MINOR + 1))
-    PATCH=0
-    ;;
-  major)
-    MAJOR=$((MAJOR + 1))
-    MINOR=0
-    PATCH=0
-    ;;
-  *)
-    echo "Usage: ./release.sh {patch|minor|major}"
-    exit 1
-    ;;
-esac
-
-NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-echo "Bumping version: $CURRENT_VERSION -> $NEW_VERSION"
-
-# Update version in pyproject.toml
-sed -i "s/version = "$CURRENT_VERSION"/version = "$NEW_VERSION"/" pyproject.toml
-
-# Commit and Tag
-git add pyproject.toml
-git commit -m "chore: release v$NEW_VERSION"
-git tag "v$NEW_VERSION"
+# Tag
+git tag "v$VERSION"
 
 # Push
-echo "🚀 Pushing changes and tag to GitHub..."
-git push origin main
-git push origin "v$NEW_VERSION"
+echo "🚀 Pushing tag v$VERSION to GitHub..."
+git push origin "v$VERSION"
 
-echo "✅ Success! Version v$NEW_VERSION pushed. GitHub Actions will handle the rest."
+echo "✅ Success! Tag v$VERSION pushed. GitHub Actions will handle the rest."

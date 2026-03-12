@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "dni-do-emerytury"
-version = "0.1.0"
+dynamic = ["version"]
 authors = [
   { name="Your Name", email="you@example.com" },
 ]
@@ -29,3 +29,6 @@ dni-do-emerytury = "dni_do_emerytury.main:main"
 [project.urls]
 Homepage = "https://github.com/theundefined/dni-do-emerytury"
 Issues = "https://github.com/theundefined/dni-do-emerytury/issues"
+
+[tool.setuptools_scm]
+write_to = "src/dni_do_emerytury/_version.py"
